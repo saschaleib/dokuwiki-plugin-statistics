@@ -446,7 +446,7 @@ class StatisticsLogger {
         $ok  = $this->hlp->runSQL($sql);
         if(is_null($ok)) {
             global $MSG;
-            Logger::error("Statistics plugin: DB Error.", $MSG);
+            Logger::debug("Statistics plugin: DB Error.", $MSG);
         }
     }
 
