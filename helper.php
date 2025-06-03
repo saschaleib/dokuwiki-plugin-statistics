@@ -6,6 +6,8 @@
  * @author  Andreas Gohr <andi@splitbrain.org>
  */
 
+use dokuwiki\Logger;
+
 class helper_plugin_statistics extends Dokuwiki_Plugin {
 
     private $dblink = null;
@@ -98,11 +100,14 @@ class helper_plugin_statistics extends Dokuwiki_Plugin {
      */
     public function runSQL($sql_string) {
         $link = $this->dbLink();
-        if(!$link) return null;
+        if(!$link) {
+			msg("No DB connection.");
+			return null;
+		}
 
         $result = mysqli_query($link, $sql_string);
         if($result === false) {
-            dbglog('DB Error: ' . mysqli_error($link) . ' ' . hsc($sql_string), -1);
+            Logger::error('Statistics plugin: DB Error: ' . mysqli_error($link) . ' ' . hsc($sql_string), -1);
             msg('DB Error: ' . mysqli_error($link) . ' ' . hsc($sql_string), -1);
             return null;
         }

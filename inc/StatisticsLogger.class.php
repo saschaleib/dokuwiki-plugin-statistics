@@ -2,6 +2,8 @@
 
 require dirname(__FILE__) . '/StatisticsBrowscap.class.php';
 
+use dokuwiki\Logger;
+
 class StatisticsLogger {
     private $hlp;
 
@@ -17,6 +19,11 @@ class StatisticsLogger {
      * Parses browser info and set internal vars
      */
     public function __construct(helper_plugin_statistics $hlp) {
+		
+		// store previously set error reporting level, then disable reporting
+		$erl = error_reporting();
+		error_reporting(0);
+		
         $this->hlp = $hlp;
 
         $this->ua_agent = trim($_SERVER['HTTP_USER_AGENT']);
@@ -32,6 +39,8 @@ class StatisticsLogger {
         $this->uid = $this->getUID();
 
         $this->log_lastseen();
+		
+		error_reporting($erl);
     }
 
     /**
@@ -52,10 +61,14 @@ class StatisticsLogger {
      * @return string
      */
     protected function getSession() {
-        $ses = $_REQUEST['ses'];
-        if(!$ses) $ses = get_doku_pref('plgstatsses', false);
-        if(!$ses) $ses = session_id();
-        return $ses;
+		if (isset($_REQUEST['ses'])) {
+			$ses = $_REQUEST['ses'];
+			if(!$ses) $ses = get_doku_pref('plgstatsses', false);
+			if(!$ses) $ses = session_id();
+			return $ses;
+		} else {
+			return null;
+		}
     }
 
     /**
@@ -410,7 +423,7 @@ class StatisticsLogger {
 
         $ip      = addslashes(clientIP(true));
         $uid     = addslashes($this->uid);
-        $user    = addslashes($_SERVER['REMOTE_USER']);
+        $user    = ( isset($_SERVER['REMOTE_USER']) ? addslashes($_SERVER['REMOTE_USER']) : '');
         $session = addslashes($this->getSession());
 
         $sql = "INSERT DELAYED INTO " . $this->hlp->prefix . "media
@@ -433,7 +446,7 @@ class StatisticsLogger {
         $ok  = $this->hlp->runSQL($sql);
         if(is_null($ok)) {
             global $MSG;
-            dbglog($MSG);
+            Logger::error("Statistics plugin: DB Error.", $MSG);
         }
     }
 

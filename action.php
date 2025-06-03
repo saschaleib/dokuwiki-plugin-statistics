@@ -8,8 +8,10 @@
 // must be run within Dokuwiki
 if(!defined('DOKU_INC')) die();
 
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once(DOKU_PLUGIN . 'action.php');
+//if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+//require_once(DOKU_PLUGIN . 'action.php');
+
+use dokuwiki\plugins\action;
 
 class action_plugin_statistics extends DokuWiki_Action_Plugin {
 
@@ -113,7 +115,7 @@ class action_plugin_statistics extends DokuWiki_Action_Plugin {
         $act  = $this->_act_clean($event->data);
         if($act == 'logout') {
             $type = 'o';
-        } elseif($_SERVER['REMOTE_USER'] && $act == 'login') {
+        } elseif(isset($_SERVER['REMOTE_USER']) && $act == 'login') {
             if($_REQUEST['r']) {
                 $type = 'p';
             } else {
@@ -180,6 +182,7 @@ class action_plugin_statistics extends DokuWiki_Action_Plugin {
         if(is_null($result)) {
             global $MSG;
             print_r($MSG);
+			return;
         }
 
         $page_ran  = false;
