@@ -71,6 +71,9 @@ class helper_plugin_statistics extends Dokuwiki_Plugin {
         // connect to DB if needed
         if(!$this->dblink) {
             if(!$this->getConf('db_server')) return null;
+			
+			error_reporting(0);
+			mysqli_report(MYSQLI_REPORT_OFF);
 
             $this->dblink = mysqli_connect(
                 $this->getConf('db_server'),
@@ -78,7 +81,7 @@ class helper_plugin_statistics extends Dokuwiki_Plugin {
                 $this->getConf('db_password')
             );
             if(!$this->dblink) {
-                msg('DB Error: connection failed', -1);
+                Logger::error('DB Error: connection failed', mysqli_connect_error());
                 return null;
             }
             if(!mysqli_select_db($this->dblink, $this->getConf('db_database'))) {
