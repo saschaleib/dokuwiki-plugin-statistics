@@ -54,7 +54,7 @@ var plugin_statistics = {
     log_view: function (act) {
         var params = jQuery.param(plugin_statistics.data);
         var img = new Image();
-        img.src = DOKU_BASE + 'lib/plugins/statistics/log.php?do=' + act + '&' + params;
+        img.src = DOKU_BASE + 'lib/plugins/statistics/do.php?do=' + act + '&' + params;
     },
 
     /**
@@ -63,7 +63,7 @@ var plugin_statistics = {
     log_external: function () {
         var params = jQuery.param(plugin_statistics.data);
         var img = new Image();
-        img.src = DOKU_BASE + 'lib/plugins/statistics/log.php?do=o&ol=' + encodeURIComponent(this.href) + '&' + params;
+        img.src = DOKU_BASE + 'lib/plugins/statistics/do.php?do=o&ol=' + encodeURIComponent(this.href) + '&' + params;
         plugin_statistics.pause(500);
         return true;
     },
@@ -77,7 +77,7 @@ var plugin_statistics = {
         var ses = plugin_statistics.get_session();
         if(ses != params.ses) return; // session expired a while ago, don't log this anymore
 
-        var url = DOKU_BASE + 'lib/plugins/statistics/log.php?do=s&' + params;
+        var url = DOKU_BASE + 'lib/plugins/statistics/do.php?do=s&' + params;
         jQuery.ajax(url, {async: false});
     },
 
