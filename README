@@ -1,4 +1,10 @@
-statistics Plugin for DokuWiki
+Forked Statistics Plugin for DokuWiki
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+- NOTE: This is a "quick fix" fork of the Statistics plugin  =
+= to work around the most urgent issues. It is not suitable  -
+- as a long-term solution for the underlying issues.         =
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 All documentation for this plugin can be found at
 http://www.dokuwiki.org/plugin:statistics
